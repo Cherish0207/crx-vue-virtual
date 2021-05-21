@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+  </head>
+  <body>
+    <pre>
+    1.新版本浏览器的优化，当js执行完成后会一并的插入到页面中 重绘
+    2.巧妙计算10w个li的js渲染的时间
+
+    要实现勾选｜操作列表的时候，只能用分片，不能用虚拟裂变
+    </pre>
+    <div id="container"></div>
+  </body>
+  <script>
+    let total = 100000;
+    let timer = Date.now();
+    for (let i = 0; i < total; i++) {
+      let li = document.createElement('li');
+      li.innerHTML = i;
+      container.appendChild(li);
+    }
+    console.log(Date.now() - timer); // 创建10w个li的js执行的时间
+    setTimeout(() => {
+      console.log(Date.now() - timer); // js执行时间+渲染时间
+    }, 0);
+  </script>
+</html>

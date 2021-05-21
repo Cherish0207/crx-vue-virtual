@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>分片</title>
+  </head>
+  <body>
+    <pre>
+    分片渲染:
+    - 根据数据大小划分，每次加载固定的数量
+    - 递归渲染，每次渲染n条
+    - 因为定时器是宏任务，会等待ui渲染完成后执行
+    - 先渲染50个，等待渲染完毕后，再循环渲染下50个
+    - 滚动加载
+    优化:
+    1.requestAnimationFrame
+    也是一个宏任务，可以配合浏览器的刷新频率
+    性能更好些，比如做动画为了动画的流畅可以使用，
+    用户不会看到很多闪烁的问题
+    2.ie浏览器-文档碎片
+    ie低版本浏览器，每次都会触发重绘
+    createDocumentFragment
+
+    缺点：
+    分片加载会导致页面dom元素过多，造成页面的卡顿
+
+  </pre
+    >
+    <div id="container"></div>
+  </body>
+  <script>
+    let TOTAL = 100000,
+      NUM = 50,
+      index = 0 /*偏移量*/,
+      id = 0; /*递增的内容*/
+    let timer = Date.now();
+    function load() {
+      index += NUM;
+      if (index < TOTAL) {
+        let fragment = document.createDocumentFragment();
+        for (let i = 0; i < NUM; i++) {
+          const li = document.createElement('li');
+          li.innerHTML = id++;
+          fragment.appendChild(li);
+        }
+        container.appendChild(fragment);
+        setTimeout(() => {
+          load();
+        });
+      }
+    }
+    load();
+    console.log(Date.now() - timer); // 创建10w个li的js执行的时间
+    setTimeout(() => {
+      console.log(Date.now() - timer); // js执行时间+渲染时间
+    }, 0);
+  </script>
+</html>
