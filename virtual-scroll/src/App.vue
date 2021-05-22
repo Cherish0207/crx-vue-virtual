@@ -22,9 +22,9 @@
 
 预留渲染:不会有半个列表的情况，减少白屏,体验效果提升--可以让用户自己去配置预留渲染多少数据
 
-如果不知道多高怎么做
+如果不知道多高怎么做--variable
     </pre>
-    <VirtualList :size="40" :remain="8" :items="items">
+    <VirtualList :size="40" :remain="8" :items="items" :variable="true">
       <item slot-scope="{ item }" :item="item"></item>
     </VirtualList>
   </div>
@@ -33,9 +33,10 @@
 <script>
 import VirtualList from './components/virtual-list.vue';
 import item from './components/virtual-list-item';
+import Mock from 'mockjs';
 const items = [];
 for (let i = 0; i < 10000; i++) {
-  items.push({ id: i, value: i });
+  items.push({ id: i, value: Mock.Random.sentence(5, 50) });
 }
 export default {
   data() {

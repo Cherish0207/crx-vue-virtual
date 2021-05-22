@@ -1,5 +1,7 @@
 <template>
-  <div style="height: 40px; border: 1px solid skyblue;background:orange">{{ item.value }}</div>
+  <div style="padding: 5px 10px; border: 1px solid skyblue; background: orange">
+    {{ item.id }}===== {{ item.value }}
+  </div>
 </template>
 <script>
 export default {
