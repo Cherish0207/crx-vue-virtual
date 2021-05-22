@@ -27,8 +27,16 @@ export default {
     };
   },
   computed: {
+    prevCount() {
+      return Math.min(this.start, this.remain);
+    },
+    nextCount() {
+      return Math.min(this.items.length - this.end, this.remain);
+    },
     visibleData() {
-      return this.items.slice(this.start, this.end);
+      const start = this.start - this.prevCount;
+      const end = this.end + this.nextCount;
+      return this.items.slice(start, end);
     },
   },
   mounted() {
@@ -41,7 +49,7 @@ export default {
       console.log(scrollTop);
       this.start = Math.floor(scrollTop / this.size);
       this.end = this.start + this.remain;
-      this.offset = this.start * this.size;
+      this.offset = (this.start - this.prevCount) * this.size;
     },
   },
 };

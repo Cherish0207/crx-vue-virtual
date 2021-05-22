@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <pre>
+      用户已经把数据都给我了
     虚拟列表 vue-virtual-scroll-list
       VirtualList: 只显示可视区域
       1.size 每条列表的高度 -- 为了算出滚动条
@@ -19,6 +20,9 @@
 2.当前可渲染的数据列表
 3.定位当前的可视区域，让可视区域去调整偏移位置
 
+预留渲染:不会有半个列表的情况，减少白屏,体验效果提升--可以让用户自己去配置预留渲染多少数据
+
+如果不知道多高怎么做
     </pre>
     <VirtualList :size="40" :remain="8" :items="items">
       <item slot-scope="{ item }" :item="item"></item>
