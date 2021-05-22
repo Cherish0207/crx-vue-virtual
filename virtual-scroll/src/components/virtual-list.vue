@@ -1,5 +1,5 @@
 <template>
-  <div class="viewport" ref="viewport" @scroll="scrollFn">
+  <div class="viewport" ref="viewport" @scroll="throttleFn">
     <div class="scrollbar" ref="scrollbar"></div>
     <div
       class="scrolllist"
@@ -18,6 +18,7 @@
   </div>
 </template>
 <script>
+import throttle from 'lodash/throttle';
 export default {
   props: {
     size: Number,
@@ -32,6 +33,9 @@ export default {
       offset: 0,
       position: [],
     };
+  },
+  created() {
+    this.throttleFn = throttle(this.scrollFn, 200, { leading: false });
   },
   computed: {
     prevCount() {
@@ -55,7 +59,6 @@ export default {
     console.log('updated');
     this.$nextTick(() => {
       let nodes = this.$refs.items;
-      console.log(nodes);
       if (!(nodes && nodes.length > 0)) return;
       nodes.forEach((node) => {
         let { height } = node.getBoundingClientRect();
@@ -104,6 +107,7 @@ export default {
       return temp;
     },
     scrollFn() {
+      console.log('scroll');
       const scrollTop = this.$refs.viewport.scrollTop;
       if (this.variable) {
         this.start = this.getStartIndex(scrollTop);
