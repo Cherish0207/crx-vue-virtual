@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <pre>
+1.进程 & 线程
+  · 进程是系统进行资源分配和调度的一个独立单位
+  · 每开一个应用程序都会分配独立的进程，一个应用可能有多个进程
+  · 一个进程内包含多个线程
+
+2.为什么 js 是单线程？
+  一个线程在某个 DOM 节点上添加内容，另一个线程删除了这个节点，这是浏览器应该以那个线程为准？
+  · webwork的确是开了一条线程，但它不能操作 dom
+
+3.渲染进程
+  · GUI渲染线程 页面渲染
+  · JS引擎线程 执行js脚本
+    GUI渲染线程和js引擎线程互斥
+  · 事件触发线程 EventLoop轮询处理线程
+  · 事件onclick，定时器setTimeout，ajax-xhr-独立线程
+
+4.浏览器中的 eventloop
+  · 微任务产生的微任务--立即执行
+
+  </pre>
+    <pre>
+5.超长列表渲染性能优化
+  · 分片渲染-通过浏览器事件环机制，分割渲染时间
+  · 虚拟列表-只渲染可视区域
+1.新版本浏览器的优化:
+    js执行完成后，会一并插入到页面, 避免了10w次的重绘
+  ie低版本浏览器: 
+    每次appendChild都会触发重绘，需要通过文档碎片createDocumentFragment
+    
+2.巧妙计算
+  · 创建 10w 个 li 的 js 执行的时间 
+  · 10w 个 li 的渲染的时间
+
+3.分片渲染:
+    · 根据数据大小划分，每次加载固定的数量.递归渲染，每次渲染n条。如先渲染50个，等待渲染完毕后，再循环渲染下50个
+  原理
+    · 因为定时器是宏任务，会等待ui渲染完成后执行
+  缺点
+    ·页面dom元素过多，造成页面卡顿
+  优化
+    · setTimeout-->requestAnimationFrame
+      · 也是宏任务，可以配合浏览器的刷新频率
+      · 性能更好些，比如做动画为了动画的流畅可以使用，
+      · 用户不会看到很多闪烁的问题
+  使用场景
+    · 滚动加载
+    · 要实现勾选｜操作列表时，只能用分片，不能用虚拟列表
+
+4.虚拟列表(只显示可视区域)vue-virtual-scroll-list  
+  属性
+    · size 每条列表高度 -- 为了算出滚动条
+    · remain 可视区域有多少条数据
+    · items 长列表的所有数据
+  页面布局
+    · viewport 视口
+    · scrollbar 自己做的滚动条
+    · scrolllist 真实渲染的区域
+  实现思路
+    · data: start end offset
+    · 页面加载后通过 size remain items 计算 viewport 和 scrollbar 的高度
+    · 滚动时, 根据 scrollbar 的 scrollTop 计算 start offset 
+    · --> transform:translate3d(0,offset,0) 定位当前的可视区域，让可视区域去调整偏移位置
+    · --> visibleData:items.slice(start, end) 当前可渲染的数据列表
+  预留渲染
+    · computed: prevCount nextCount
+    · offset = (start - prevCount) * size
+    · 不会有半个列表的情况，减少白屏,体验效果提升--(可以做成用户自定义的)
+  事先不知道size
+    · data: variable size(预计高度) position[]
+    · 页面加载后根据 size 缓存每一项列表的 top bottom height 到 position
+    · getStartIndex 根据 scrollTop 使用二分查找找到对应的start
+    · 不会有半个列表的情况，减少白屏,体验效果提升--(可以做成用户自定义的)
+  优化点
+    · throttle 截流 scroll 事件
+    · 作用域插槽，在父组件中传参 子组件调用
+  使用场景
+    · 用户已经把超长的大列表数据给我了
+  </pre
+    >
+</body>
+</html>
