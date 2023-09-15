@@ -18,7 +18,7 @@
   </div>
 </template>
 <script>
-import throttle from 'lodash/throttle';
+import throttle from "lodash/throttle";
 export default {
   props: {
     size: Number,
@@ -51,18 +51,19 @@ export default {
     },
   },
   mounted() {
-    this.$refs.viewport.style.height = this.size * this.remain + 'px';
-    this.$refs.scrollbar.style.height = this.size * this.items.length + 'px';
+    this.$refs.viewport.style.height = this.size * this.remain + "px";
+    this.$refs.scrollbar.style.height = this.size * this.items.length + "px";
     this.cacheList();
   },
   updated() {
-    console.log('updated');
+    console.log("updated");
     this.$nextTick(() => {
       let nodes = this.$refs.items;
       if (!(nodes && nodes.length > 0)) return;
       nodes.forEach((node) => {
+        debugger
         let { height } = node.getBoundingClientRect();
-        let id = node.getAttribute('vid') - 0;
+        let id = node.getAttribute("vid") - 0;
         let oldHeight = this.position[id].height;
         let val = oldHeight - height;
         if (val) {
@@ -75,7 +76,7 @@ export default {
         }
       });
       this.$refs.scrollbar.style.height =
-        this.position[this.position.length - 1].bottom + 'px';
+        this.position[this.position.length - 1].bottom + "px";
     });
   },
   methods: {
@@ -107,13 +108,16 @@ export default {
       return temp;
     },
     scrollFn() {
-      console.log('scroll');
       const scrollTop = this.$refs.viewport.scrollTop;
+      // console.log('scroll',scrollTop);
       if (this.variable) {
         this.start = this.getStartIndex(scrollTop);
         this.offset = this.position[this.start - this.prevCount]
-          ? this.position[this.start - this.prevCount].top
-          : 0;
+        ? this.position[this.start - this.prevCount].top
+        : 0;
+        // let start = this.start
+        // let offset = this.offset
+        // debugger
       } else {
         this.start = Math.floor(scrollTop / this.size);
         this.offset = (this.start - this.prevCount) * this.size;
