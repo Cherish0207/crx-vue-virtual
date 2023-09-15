@@ -12,11 +12,13 @@
   <script>
     let total = 100000;
     let timer = Date.now();
+    console.time('loop')
     for (let i = 0; i < total; i++) {
       let li = document.createElement('li');
-      li.innerHTML = i;
+      li.innerHTML = i+1;
       container.appendChild(li);
     }
+    console.timeEnd('loop')
     console.log(Date.now() - timer); // 创建10w个li的js执行的时间
     setTimeout(() => {
       console.log(Date.now() - timer); // js执行时间+渲染时间

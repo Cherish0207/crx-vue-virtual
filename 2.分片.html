@@ -15,6 +15,7 @@
       index = 0 /*偏移量*/,
       id = 0; /*递增的内容*/
     let timer = Date.now();
+    console.time('loop')
     function load() {
       index += NUM;
       if (index < TOTAL) {
@@ -31,6 +32,7 @@
       }
     }
     load();
+    console.timeEnd('loop')
     console.log(Date.now() - timer); // 创建10w个li的js执行的时间
     setTimeout(() => {
       console.log(Date.now() - timer); // js执行时间+渲染时间
